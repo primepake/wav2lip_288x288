@@ -5,3 +5,5 @@ Some Features I will implement here
 - [x] LeakyRelu
 - [x] Gradient penalty
 - [ ] Wasserstein Loss
+
+I trained my own model on AVSPEECH dataset and then transfer learning with my private dataset. 
