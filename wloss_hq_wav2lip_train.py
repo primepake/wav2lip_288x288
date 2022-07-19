@@ -1,5 +1,6 @@
 from os.path import dirname, join, basename, isfile
 from tqdm import tqdm
+import torch.autograd as autograd
 
 from models import SyncNet_color as SyncNet
 from models import Wav2Lip, Wav2Lip_disc_qual
@@ -14,7 +15,8 @@ from torch.utils import data as data_utils
 import numpy as np
 
 from glob import glob
-
+import torch.multiprocessing as mp
+import torch.distributed as dist
 import os, random, cv2, argparse
 from hparams import hparams, get_image_list
 
