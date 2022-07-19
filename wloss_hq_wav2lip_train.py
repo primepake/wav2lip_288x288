@@ -255,15 +255,16 @@ def train(device, model, disc, train_data_loader, test_data_loader, optimizer, d
 
             pred = disc(gt)
             disc_real_loss = -pred.mean()
-
-            pred = disc(g.detach())
+            
+            fake_img = g.detach()
+            pred = disc(fake_img)
             disc_fake_loss = pred.mean()
 
             disc_fake_loss.backward()
 
             # gradient penalty
             alpha = torch.rand(gt.size(0), 1)
-            alpha = alpha.expand(gt.size(0), int(gt.nelement()/gt.size(0))).contiguous().view(gt.size(0), 3, 5, 96, 96).to(device)
+            alpha = alpha.expand(gt.size(0), int(gt.nelement()/gt.size(0))).contiguous().view(gt.size(0), 3, 5, 288, 288).to(device)
             interpolates = alpha * gt + ((1 - alpha) * fake_img)
             interpolates = interpolates.to(device)
             interpolates = autograd.Variable(interpolates, requires_grad=True)
@@ -276,7 +277,7 @@ def train(device, model, disc, train_data_loader, test_data_loader, optimizer, d
 
             gradient_penalty = ((gradients.norm(2, dim=1) - 1) ** 2).mean() * LAMBDA
             gradient_penalty.backward()
-            
+
             disc_optimizer.step()
 
             running_disc_real_loss += disc_real_loss.item()
