@@ -6,4 +6,5 @@ Some Features I will implement here
 - [x] Gradient penalty
 - [x] Wasserstein Loss
 - [-] Kubeflow for training process
+- [-] Orthogonal regularization with gradient penalty
 I trained my own model on AVSPEECH dataset and then transfer learning with my private dataset. 
