@@ -1,5 +1,4 @@
 import os
-import os
 import argparse
 import shutil
 import json, subprocess, random, string
