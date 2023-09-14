@@ -1,6 +1,6 @@
 from os.path import dirname, join, basename, isfile
 from tqdm import tqdm
-
+import os
 from models import SyncNet_color as SyncNet
 import audio
 
