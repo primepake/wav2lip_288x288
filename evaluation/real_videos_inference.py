@@ -37,7 +37,7 @@ parser.add_argument('--max_frame_res', help='Downsample to at least this frame r
 # parser.add_argument('--resize_factor', default=1, type=int)
 
 args = parser.parse_args()
-args.img_size = 96
+args.img_size = 288
 
 def get_smoothened_boxes(boxes, T):
 	for i in range(len(boxes)):
