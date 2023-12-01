@@ -6,13 +6,7 @@ Some Features I will implement here
 - [x] LeakyRelu
 - [x] Gradient penalty
 - [x] Wasserstein Loss
-- [] wav2lip_384
-- [] wav2lip_512
-- [] syncnet_192
-- [] syncnet_384
-- [] 2TUnet instead of simple unet in wav2lip original: https://arxiv.org/abs/2210.15374
-- [] MSG-UNet: https://github.com/laxmaniron/MSG-U-Net
-- [] SAM-UNet: https://github.com/1343744768/Multiattention-UNet
+- [x] SAM-UNet: https://github.com/1343744768/Multiattention-UNet
 <br />
 I trained my own model on AVSPEECH dataset and then transfer learning with my private dataset. 
 
