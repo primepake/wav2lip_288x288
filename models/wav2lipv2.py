@@ -3,7 +3,7 @@ from torch import nn
 from torch.nn import functional as F
 import math
 
-from .conv2 import Conv2dTranspose, Conv2d, nonorm_Conv2d
+from .conv import Conv2dTranspose, Conv2d, nonorm_Conv2d
 
 class Wav2Lip(nn.Module):
     def __init__(self):

@@ -8,8 +8,17 @@ Some Features I will implement here
 - [x] Wasserstein Loss
 - [x] SAM-UNet: https://github.com/1343744768/Multiattention-UNet
 <br />
-I trained my own model on AVSPEECH dataset and then transfer learning with my private dataset. 
 
+First, Train syncnet
+```
+python3 train_syncnet_sam.py
+```
+Second, train wav2lip-Sam
+```
+python3 hq_wav2lip_sam_train.py
+```
+Some demo from chinese users:
+https://github.com/primepake/wav2lip_288x288/issues/89#issue-2047907323
 ## Citing
 
 To cite this repository:

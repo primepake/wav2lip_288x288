@@ -3,13 +3,40 @@ from torch import nn
 from torch.nn import functional as F
 
 class Conv2d(nn.Module):
-    def __init__(self, cin, cout, kernel_size, stride, padding, residual=False, *args, **kwargs):
+    def __init__(self, cin, cout, kernel_size, stride, padding, residual=False, act='relu',*args, **kwargs):
         super().__init__(*args, **kwargs)
         self.conv_block = nn.Sequential(
                             nn.Conv2d(cin, cout, kernel_size, stride, padding),
                             nn.BatchNorm2d(cout)
                             )
-        self.act = nn.ReLU()
+        if act == 'relu':
+            self.act = nn.ReLU()
+        elif act == 'Tanh':
+            self.act = nn.Tanh()
+        elif act == 'leaky':
+            self.act = nn.LeakyReLU(0.2, inplace=True)
+
+        self.residual = residual
+
+    def forward(self, x):
+        out = self.conv_block(x)
+        if self.residual:
+            out += x
+        return self.act(out)
+
+class Conv1d(nn.Module):
+    def __init__(self, cin, cout, kernel_size, stride, padding, residual=False,act='relu', *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.conv_block = nn.Sequential(
+                            nn.Conv1d(cin, cout, kernel_size, stride, padding),
+                            nn.BatchNorm1d(cout)
+                            )
+        if act=='ReLU':
+            self.act = nn.ReLU()
+        elif act=='Tanh':
+            self.act = nn.Tanh()
+        elif act=='leaky':
+            self.act = nn.LeakyReLU(0.2, inplace=True)
         self.residual = residual
 
     def forward(self, x):
