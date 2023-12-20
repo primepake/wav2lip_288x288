@@ -9,10 +9,12 @@ Some Features I will implement here
 - [x] SAM-UNet: https://github.com/1343744768/Multiattention-UNet
 <br />
 Each line on filelist should be full path <br />
-First, Train syncnet
+First, Train syncnet <br />
+
 ```
 python3 train_syncnet_sam.py
 ```
+
 Second, train wav2lip-Sam
 ```
 python3 hq_wav2lip_sam_train.py
