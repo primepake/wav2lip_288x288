@@ -8,7 +8,7 @@ Some Features I will implement here
 - [x] Wasserstein Loss
 - [x] SAM-UNet: https://github.com/1343744768/Multiattention-UNet
 <br />
-
+Each line on filelist should be full path <br />
 First, Train syncnet
 ```
 python3 train_syncnet_sam.py

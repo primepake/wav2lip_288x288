@@ -87,7 +87,7 @@ class Dataset(object):
             window_fnames.append(frame)
         return window_fnames
     
-    def read_wrong_window(self, vidname, window_fnames, is_flip):
+    def read_wrong_window(self, window_fnames, is_flip):
         if window_fnames is None: return None, 0, 0, 0
         shuffle(window_fnames)
         if random.random() > 0.5:
@@ -107,7 +107,7 @@ class Dataset(object):
 
         return window, h, w, c
     
-    def read_window(self, vidname, window_fnames, is_flip):
+    def read_window(self, window_fnames, is_flip):
         if window_fnames is None: return None, 0, 0, 0
         window = []
         h, w, c = 0, 0, 0
@@ -177,26 +177,21 @@ class Dataset(object):
             id_img_name = self.get_frame_id(img_name)
             wrong_img_name = img_names[(id_img_name + 5) % len(img_names)]
             id_wrong_img_name = self.get_frame_id(wrong_img_name)
-            # print("before: id_img_name vs id_wrong_img_name: ", id_img_name, id_wrong_img_name)
             while wrong_img_name == img_name or abs(id_img_name - id_wrong_img_name) < 5:
                 
                 wrong_img_name = random.choice(img_names)
                 id_wrong_img_name = self.get_frame_id(wrong_img_name)
-                # print("id_img_name vs id_wrong_img_name: ", id_img_name, id_wrong_img_name)
                 
             
             window_fnames = self.get_window(img_name)
             wrong_window_fnames = self.get_window(wrong_img_name)
             
-            window, h, w, c  = self.read_window(vidname, window_fnames, is_flip)
+            window, h, w, c  = self.read_window(window_fnames, is_flip)
             if window is None:
-                # print("Windoe", vidname)
                 continue
             
-            # wrong_window, h, w, c = self.read_window(vidname, wrong_window_fnames, is_flip)
-            wrong_window, h, w, c = self.read_wrong_window(vidname, wrong_window_fnames, is_flip)
+            wrong_window, h, w, c = self.read_wrong_window(wrong_window_fnames, is_flip)
             if wrong_window is None:
-                # print("wrong Windoe", vidname)
                 continue
             
             try:
@@ -219,7 +214,6 @@ class Dataset(object):
                     with open(mel_out_path, "wb") as f:
                         np.save(f, orig_mel)
             except Exception as e:
-                # print("Mel", vidname)
                 continue
 
             mel = self.crop_audio_window(orig_mel.copy(), img_name)
@@ -245,7 +239,7 @@ class Dataset(object):
             mel = torch.FloatTensor(mel.T).unsqueeze(0)
             indiv_mels = torch.FloatTensor(indiv_mels).unsqueeze(1)
             y = torch.FloatTensor(y)
-            return x, indiv_mels, mel, y, vidname, is_silence
+            return x, indiv_mels, mel, y, vidname
 
 
 def save_sample_images(x, g, gt, vidname, global_step, checkpoint_dir):
@@ -323,12 +317,12 @@ def train(device, model, disc, train_data_loader, test_data_loader, optimizer, d
             stop_training = False
             # print('Starting Epoch: {}'.format(global_epoch))
 
-            running_sync_loss, running_l1_loss, disc_loss, running_perceptual_loss = 0., 0., 0., 0.
+            running_sync_loss, running_l1_loss, running_perceptual_loss = 0., 0., 0., 0.
             running_disc_real_loss, running_disc_fake_loss = 0., 0.
             running_vgg_loss= 0.
             st = time.time()
             offset = 0
-            for step, (x, indiv_mels, mel, gt, vidname, is_silence) in enumerate(train_data_loader):
+            for step, (x, indiv_mels, mel, gt, vidname) in enumerate(train_data_loader):
                 load_time = time.time() - st
                 st = time.time()
                 disc.train()
@@ -456,7 +450,7 @@ def train(device, model, disc, train_data_loader, test_data_loader, optimizer, d
 
                 if syncnet_wt > 0. and global_step > sync_iter_start and global_step % hparams.eval_interval == 0:
                     with torch.no_grad():
-                        average_loss = eval_model(test_data_loader, device, model, disc, syncnet, d_weight, syncnet_wt, loss_fn_vgg)
+                        average_loss = eval_model(test_data_loader, device, model, disc, syncnet)
                         
                         logging.warning("Average loss: {}".format(average_loss))
                         
@@ -486,16 +480,12 @@ def train(device, model, disc, train_data_loader, test_data_loader, optimizer, d
     # fidLogger.save()
 
 
-def eval_model(test_data_loader, device, model, disc, syncnet, d_weight, syncnet_wt, loss_fn_vgg):
+def eval_model(test_data_loader, device, model, disc, syncnet):
     eval_steps = 20
     logging.warning('Evaluating for {} steps'.format(eval_steps))
-    running_sync_loss, running_l1_loss, running_disc_real_loss, running_vgg_loss, running_perceptual_loss ,running_disc_fake_loss, running_total_loss = 0., 0., 0., 0., 0., 0., 0.
-    arr_disc_fake_loss = []
-    arr_disc_real_loss = []
-    arr_perceptual_loss = []
-    prog_bar = tqdm(enumerate(test_data_loader))
+    running_sync_loss = 0.
     count = 0
-    for step, (x, indiv_mels, mel, gt, vidname, is_silence) in enumerate(test_data_loader):
+    for step, (x, indiv_mels, mel, gt, vidname) in enumerate(test_data_loader):
 
         model.eval()
         disc.eval()

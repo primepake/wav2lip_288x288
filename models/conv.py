@@ -11,7 +11,7 @@ class Conv2d(nn.Module):
                             )
         if act == 'relu':
             self.act = nn.ReLU()
-        elif act == 'Tanh':
+        elif act == 'tanh':
             self.act = nn.Tanh()
         elif act == 'leaky':
             self.act = nn.LeakyReLU(0.2, inplace=True)
@@ -33,7 +33,7 @@ class Conv1d(nn.Module):
                             )
         if act=='ReLU':
             self.act = nn.ReLU()
-        elif act=='Tanh':
+        elif act=='tanh':
             self.act = nn.Tanh()
         elif act=='leaky':
             self.act = nn.LeakyReLU(0.2, inplace=True)

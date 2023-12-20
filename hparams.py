@@ -1,14 +1,13 @@
 from glob import glob
 import os
 
-def get_image_list(data_root, split):
+def get_image_list(file_list_txt):
 	filelist = []
-
-	with open('filelists/{}.txt'.format(split)) as f:
+	with open(file_list_txt) as f:
 		for line in f:
 			line = line.strip()
 			if ' ' in line: line = line.split()[0]
-			filelist.append(os.path.join(data_root, line))
+			filelist.append(line)
 
 	return filelist
 
