@@ -287,16 +287,6 @@ def hinge_d_loss(logits_real, logits_fake):
     return loss_real, loss_fake
 
 
-def calculate_adaptive_weight(nll_loss, g_loss, last_layer=None, wt=0.2):
-    nll_grads = torch.autograd.grad(nll_loss, last_layer, retain_graph=True)[0]
-    g_grads = torch.autograd.grad(g_loss, last_layer, retain_graph=True)[0]
-
-    d_weight = torch.norm(nll_grads) / (torch.norm(g_grads) + 1e-4)
-    d_weight = torch.clamp(d_weight, 0.0, 1e4).detach()
-    d_weight = d_weight * wt
-    return d_weight
-
-
 def train(device, model, disc, train_data_loader, test_data_loader, optimizer, disc_optimizer, checkpoint_dir=None, checkpoint_interval=None, nepochs=None, log_interval=None,syncnet=None):
     global global_step, global_epoch
     resumed_step = global_step
@@ -619,15 +609,9 @@ def run():
         load_checkpoint(args.syncnet_checkpoint_path, syncnet, None, reset_optimizer=True,
                                     overwrite_global_states=False)
 
-        audio_encoder = syncnet.audio_encoder
         syncnet = nn.DataParallel(syncnet).to(device)
-
-        for p in syncnet.parameters():
-            p.requires_grad = False
-        model.audio_encoder = audio_encoder
-        model.freeze_audio_encoder()
-
-     # Model
+        syncnet.eval()
+        
     
 
     optimizer = optim.Adam([p for p in model.parameters() if p.requires_grad],
