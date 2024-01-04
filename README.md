@@ -6,7 +6,9 @@ Original repo: https://github.com/Rudrabha/Wav2Lip
 - [x] Gradient penalty
 - [x] Wasserstein Loss
 - [x] SAM-UNet: https://github.com/1343744768/Multiattention-UNet
+      
 Each line on filelist should be full path <br />
+
 First, Train syncnet <br />
 
 ```
