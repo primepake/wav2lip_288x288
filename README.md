@@ -1,6 +1,5 @@
 # Better wav2lip model version.
-The original repo: https://github.com/Rudrabha/Wav2Lip
-Some Features I will implement here
+Original repo: https://github.com/Rudrabha/Wav2Lip
 - [x] model size 288x288, 384x384, 512x512
 - [x] PRelu
 - [x] LeakyRelu
@@ -23,6 +22,7 @@ Some demo from chinese users:
 https://github.com/primepake/wav2lip_288x288/issues/89#issue-2047907323
 
 # New Features: DINet full pipeline training
+Original repo: https://github.com/MRzzm/DINet
 - [ ] Syncnet training using deepspeech
 - [ ] DINet frame training
 - [ ] DINet clip training
