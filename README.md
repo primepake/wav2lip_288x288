@@ -24,9 +24,9 @@ https://github.com/primepake/wav2lip_288x288/issues/89#issue-2047907323
 
 # New Features: DINet full pipeline training
 Original repo: https://github.com/MRzzm/DINet
-- [ ] Syncnet training using deepspeech, melspectrogram
-- [ ] DINet frame training using melspectrogram
-- [ ] DINet clip training using melspectrogram
+- [ ] Syncnet training using deepspeech
+- [ ] DINet frame training using deepspeech
+- [ ] DINet clip training using deepspeech
 
 ## Citing
 
