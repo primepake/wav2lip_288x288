@@ -338,8 +338,8 @@ def train(device, model, disc, train_data_loader, test_data_loader, optimizer, d
                     
                     l1loss = recon_loss(g, gt)
                  
-                    vgg_loss = loss_fn_vgg(torch.cat([g[:, :, i] for i in range(g.size(2))], dim=0),
-                                            torch.cat([gt[:, :, i] for i in range(gt.size(2))], dim=0))
+                    vgg_loss = loss_fn_vgg(torch.cat([g[:, :, i] for i in range(g.size(2))], dim=0) * 2 - 1,
+                                            torch.cat([gt[:, :, i] for i in range(gt.size(2))], dim=0) * 2 - 1)
                     vgg_loss = vgg_loss.mean()
                     nll_loss = l1loss + vgg_loss
                     

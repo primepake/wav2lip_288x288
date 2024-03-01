@@ -151,13 +151,13 @@ class Wav2Lip_SAM(nn.Module):
 
         self.output_block = nn.Sequential(Conv2d(80, 32, kernel_size=3, stride=1, padding=1),
             nn.Conv2d(32, 3, kernel_size=1, stride=1, padding=0),
-            nn.Tanh())
+            nn.Sigmoid())
 
     def freeze_audio_encoder(self):
         for p in self.audio_encoder.parameters():
             p.requires_grad = False
 
-    def forward(self, audio_sequences, face_sequences, noise=False):
+    def forward(self, audio_sequences, face_sequences):
 
         B = audio_sequences.size(0)
 
