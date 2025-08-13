@@ -22,11 +22,13 @@ python3 hq_wav2lip_sam_train.py
 Some demo from chinese users:
 https://github.com/primepake/wav2lip_288x288/issues/89#issue-2047907323
 
-# New Features: DINet full pipeline training
-Original repo: https://github.com/MRzzm/DINet
-- [ ] Syncnet training using deepspeech
-- [ ] DINet frame training using deepspeech
-- [ ] DINet clip training using deepspeech
+## Demo - 384x384 Resolution
+
+### Quick Preview (GIF)
+![Demo Preview](assets/test5_demo.gif)
+
+### Full Quality Video
+- [Download MOV (Original)](assets/test5_facial_dubbing_add_audio.mov)
 
 ## Citing
 
